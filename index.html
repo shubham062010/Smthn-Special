@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Baby Girl ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <!-- Using Canvas Confetti Library for the 'Yes' moment -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            --glass: rgba(255, 255, 255, 0.5);
+            --accent: #ff4d6d;
+            --text-color: #6d1a2c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--bg-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Floating Background Hearts */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 100, 130, 0.2);
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Page Transitions */
+        .page {
+            position: absolute;
+            width: 85%;
+            max-width: 450px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .note-text {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100px; /* Prevents jumping during typing */
+        }
+
+        /* Buttons */
+        .btn-main {
+            background: white;
+            color: var(--accent);
+            border: none;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
+            margin-top: 20px;
+        }
+
+        .btn-main:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #no-btn {
+            background: rgba(255, 255, 255, 0.4);
+            color: #888;
+            transition: all 0.4s ease-out; /* Smooth glide */
+        }
+
+        /* Music Toggle */
+        .music-ctrl {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .back-arrow {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.8rem;
+            cursor: pointer;
+            margin-top: 25px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .back-arrow:hover { transform: scale(1.2); }
+
+    </style>
+</head>
+<body>
+
+    <div id="heart-container"></div>
+
+    <!-- Music (Optional: replace the src with your favorite song link) -->
+    <div class="music-ctrl" onclick="toggleMusic()">🎵</div>
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Page 1: Home -->
+    <div class="page active" id="page-home">
+        <h1>Hey, My Baby Girl...</h1>
+        <p class="note-text">I have something to tell you, and something to ask. Want to see?</p>
+        <button class="btn-main" onclick="showPage('page-note')">Yes, show me ❤️</button>
+    </div>
+
+    <!-- Page 2: Note (Typewriter Effect) -->
+    <div class="page" id="page-note">
+        <h1>Here It Is</h1>
+        <p id="typewriter" class="note-text"></p>
+        <button class="btn-main" id="note-next-btn" style="display:none;" onclick="showPage('page-question')">One more thing...</button>
+    </div>
+
+    <!-- Page 3: The Question -->
+    <div class="page" id="page-question">
+        <h1>Will You Be My Valentine?</h1>
+        <p id="typewriter" class="note-text">You're the best thing that ever happened to me. So, Shivika, will you be mine forever?</p>
+        <div class="btn-group">
+            <button class="btn-main" onclick="celebrate('page-yes')">Yes!</button>
+            <button class="btn-main" onclick="celebrate('page-ofcourse')">Of course!</button>
+            <button class="btn-main" id="no-btn" onmouseover="moveNoButton()">No</button>
+        </div>
+    </div>
+
+    <!-- Page 4: Yes Result -->
+    <div class="page" id="page-yes">
+        <h1>Yayyaayyaayyy!! 🥰🎉</h1>
+        <p class="note-text">You just made me the happiest person ever. I loveee youuuu soo muchh 🥰🥰🥰🥰🥰🥰❤️❤️❤️❤️❤️❤️❤️</p>
+        <button class="back-arrow" onclick="showPage('page-question')">←</button>
+    </div>
+
+    <!-- Page 5: Of Course Result -->
+    <div class="page" id="page-ofcourse">
+        <h1>I knew it! ❤️❤️</h1>
+        <p class="note-text">I loveee youuu soo muchhh my babyy girlll 🥰🥰🥰🥰🥰🥰🥰❤️❤️❤️❤️❤️❤️❤️</</p>
+        <button class="back-arrow" onclick="showPage('page-question')">←</button>
+    </div>
+
+    <script>
+        // 1. Floating Hearts Background
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            document.getElementById('heart-container').appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+        setInterval(createHeart, 450);
+
+        // 2. Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            // Trigger typewriter if it's the note page
+            if(pageId === 'page-note') {
+                startTypewriter();
+            }
+        }
+
+        // 3. Typewriter Effect
+        const fullText = "Every moment spent with you feels like a beautiful dream I never want to wake up from. I made this just to tell you how much I truly love and appreciate you... because words alone aren't enough.";
+        let index = 0;
+
+        function startTypewriter() {
+            const container = document.getElementById('typewriter');
+            const nextBtn = document.getElementById('note-next-btn');
+            container.innerHTML = "";
+            index = 0;
+            nextBtn.style.display = "none";
+            
+            function type() {
+                if (index < fullText.length) {
+                    container.innerHTML += fullText.charAt(index);
+                    index++;
+                    setTimeout(type, 50);
+                } else {
+                    nextBtn.style.display = "inline-block";
+                }
+            }
+            type();
+        }
+
+        // 4. Smooth "No" Button
+        function moveNoButton() {
+            const btn = document.getElementById('no-btn');
+            const padding = 60;
+            btn.style.position = 'fixed'; // Fixed ensures it stays relative to screen
+            
+            const maxX = window.innerWidth - btn.offsetWidth - padding;
+            const maxY = window.innerHeight - btn.offsetHeight - padding;
+            
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+            
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        // 5. Celebration (Confetti)
+        function celebrate(targetPage) {
+            showPage(targetPage);
+            
+            // Heart Confetti Explosion
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff4d6d', '#ffafbd']
+              });
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff4d6d', '#ffafbd']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        }
+
+        // 6. Music Toggle
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            if (music.paused) {
+                music.play();
+            } else {
+                music.pause();
+            }
+        }
+    </script>
+</body>
+</html>
