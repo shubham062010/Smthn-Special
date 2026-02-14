@@ -46,7 +46,7 @@
         .page {
             position: absolute;
             width: 85%;
-            max-width: 450px;
+            max-width: 550px;
             background: var(--glass);
             backdrop-filter: blur(15px);
             padding: 40px;
@@ -78,6 +78,7 @@
             color: var(--text-color);
             line-height: 1.6;
             min-height: 100px; /* Prevents jumping during typing */
+	    white-space: pre-line;
         }
 
         /* Buttons */
@@ -113,7 +114,7 @@
         #no-btn {
             background: rgba(255, 255, 255, 0.4);
             color: #888;
-            transition: all 0.4s ease-out; /* Smooth glide */
+            transition: all 0.7s ease-out; /* Smooth glide */
         }
 
         /* Music Toggle */
@@ -162,7 +163,7 @@
     <!-- Page 1: Home -->
     <div class="page active" id="page-home">
         <h1>Hey, My Baby Girl...</h1>
-        <p class="note-text">I have something to tell you, and something to ask. Want to see?</p>
+        <p class="note-text">I have something to tell you, and something to ask.<br> Want to see?</p>
         <button class="btn-main" onclick="showPage('page-note')">Yes, show me ❤️</button>
     </div>
 
@@ -176,7 +177,7 @@
     <!-- Page 3: The Question -->
     <div class="page" id="page-question">
         <h1>Will You Be My Valentine?</h1>
-        <p id="typewriter" class="note-text">You're the best thing that ever happened to me. So, Shivika, will you be mine forever?</p>
+        <p id="typewriter" class="note-text">You're the best thing that ever happened to me. So, Shivika, will you be mine forever? 🌹💍</p>
         <div class="btn-group">
             <button class="btn-main" onclick="celebrate('page-yes')">Yes!</button>
             <button class="btn-main" onclick="celebrate('page-ofcourse')">Of course!</button>
@@ -187,13 +188,13 @@
     <!-- Page 4: Yes Result -->
     <div class="page" id="page-yes">
         <h1>Yayyaayyaayyy!! 🥰🎉</h1>
-        <p class="note-text">You just made me the happiest person ever. I loveee youuuu soo muchh 🥰🥰🥰🥰🥰🥰❤️❤️❤️❤️❤️❤️❤️</p>
+        <p class="note-text">I loveee youuuu soo muchh 🥰🥰🥰🥰🥰🥰❤️❤️❤️❤️❤️❤️❤️ <br> (Waise mujhe pata tha tu mana ni kr paegi 😉)</p>
         <button class="back-arrow" onclick="showPage('page-question')">←</button>
     </div>
 
     <!-- Page 5: Of Course Result -->
     <div class="page" id="page-ofcourse">
-        <h1>I knew it! ❤️❤️</h1>
+        <h1>I knew it! 😉❤️</h1>
         <p class="note-text">I loveee youuu soo muchhh my babyy girlll 🥰🥰🥰🥰🥰🥰🥰❤️❤️❤️❤️❤️❤️❤️</</p>
         <button class="back-arrow" onclick="showPage('page-question')">←</button>
     </div>
@@ -223,7 +224,7 @@
         }
 
         // 3. Typewriter Effect
-        const fullText = "Every moment spent with you feels like a beautiful dream I never want to wake up from. I made this just to tell you how much I truly love and appreciate you... because words alone aren't enough.";
+        const fullText = "Every moment I spend with you feels like a beautiful dream I never want to wake up from. \n I made this just to tell you how much I love and cherish you Shivika... because words alone aren't enough sometimes.";
         let index = 0;
 
         function startTypewriter() {
@@ -237,7 +238,7 @@
                 if (index < fullText.length) {
                     container.innerHTML += fullText.charAt(index);
                     index++;
-                    setTimeout(type, 50);
+                    setTimeout(type, 40);
                 } else {
                     nextBtn.style.display = "inline-block";
                 }
